@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-3">
+  {% if grade >= 80 %}
+    <div class="alert alert-success"><b>Congratulations!</b> You have passed the exam.</div>
+  {% else %}
+    <div class="alert alert-danger"><b>Failed.</b> Sorry, you did not pass the exam.</div>
+  {% endif %}
+  <h4>Your score: {{ score }} / {{ total_score }} ({{ grade }}%)</h4>
+  <h5 class="mt-3">Exam results</h5>
+  {% for question in course.question_set.all %}
+    <div class="card mt-2">
+      <div class="card-header">{{ question.question_text }}</div>
+      <div class="card-body">
+        {% for choice in question.choice_set.all %}
+          {% if choice.is_correct and choice.id in selected_ids %}
+            <div class="text-success">Correct answer: {{ choice.choice_text }}</div>
+          {% elif choice.is_correct %}
+            <div class="text-warning">Not selected: {{ choice.choice_text }}</div>
+          {% elif choice.id in selected_ids %}
+            <div class="text-danger">Wrong answer: {{ choice.choice_text }}</div>
+          {% else %}
+            <div>{{ choice.choice_text }}</div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</div>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-3">
+  <h2>{{ course.name }}</h2>
+  <div class="card-columns-vertical">
+    {% for lesson in course.lesson_set.all %}
+      <div class="card mt-1">
+        <div class="card-header"><h5>Lesson {{ lesson.order|add:1 }}: {{ lesson.title }}</h5></div>
+        <div class="card-body">{{ lesson.content }}</div>
+      </div>
+    {% endfor %}
+  </div>
+
+  <h3 class="mt-4">Exam</h3>
+  <form action="{% url 'onlinecourse:submit' course.id %}" method="post">
+    {% csrf_token %}
+    {% for question in course.question_set.all %}
+      <div class="card mt-2">
+        <div class="card-header">{{ question.question_text }}</div>
+        <div class="card-body">
+          {% for choice in question.choice_set.all %}
+            <div class="form-check">
+              <input type="checkbox" class="form-check-input" name="choice_{{ choice.id }}" id="c{{ choice.id }}" value="{{ choice.id }}">
+              <label class="form-check-label" for="c{{ choice.id }}">{{ choice.choice_text }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+    <button class="btn btn-primary mt-3 mb-5" type="submit">Submit</button>
+  </form>
+</div>
+</body>
+</html>

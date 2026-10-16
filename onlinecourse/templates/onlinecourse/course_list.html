@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-3">
+  <h2>Courses</h2>
+  {% for course in courses %}
+    <div class="card mt-2"><div class="card-body">
+      <a href="{% url 'onlinecourse:course_details' course.id %}">{{ course.name }}</a>
+    </div></div>
+  {% endfor %}
+</div>
+</body>
+</html>
